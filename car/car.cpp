@@ -51,7 +51,7 @@
 #include "car.h"
 #include <QtWidgets/QtWidgets>
 #include <qmath.h>
-
+#define TEST 1
 QRectF Car::boundingRect() const
 {
     return QRectF(-35, -81, 70, 115);
@@ -96,23 +96,25 @@ void Car::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidg
 
     painter->setBrush(Qt::gray);
     painter->drawRect(-20, -58, 40, 2); // front axel
-    painter->drawRect(-20, 7, 40, 2); // rear axel
+    if(0 == TEST)
+    {
+        painter->drawRect(-20, 7, 40, 2); // rear axel
 
-    painter->setBrush(color);
-    painter->drawRect(-25, -79, 50, 10); // front wing
+        painter->setBrush(color);
+        painter->drawRect(-25, -79, 50, 10); // front wing
 
-    painter->drawEllipse(-25, -48, 50, 20); // side pods
-    painter->drawRect(-25, -38, 50, 35); // side pods
-    painter->drawRect(-5, 9, 10, 10); // back pod
+        painter->drawEllipse(-25, -48, 50, 20); // side pods
+        painter->drawRect(-25, -38, 50, 35); // side pods
+        painter->drawRect(-5, 9, 10, 10); // back pod
 
-    painter->drawEllipse(-10, -81, 20, 100); // main body
+        painter->drawEllipse(-10, -81, 20, 100); // main body
 
-    painter->drawRect(-17, 19, 34, 15); // rear wing
+        painter->drawRect(-17, 19, 34, 15); // rear wing
 
-    painter->setBrush(Qt::black);
-    painter->drawPie(-5, -51, 10, 15, 0, 180 * 16);
-    painter->drawRect(-5, -44, 10, 10); // cocpit
-
+        painter->setBrush(Qt::black);
+        painter->drawPie(-5, -51, 10, 15, 0, 180 * 16);
+        painter->drawRect(-5, -44, 10, 10); // cocpit
+    }
     painter->save();
     painter->translate(-20, -58);
     painter->rotate(wheelsAngle);
@@ -124,13 +126,18 @@ void Car::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidg
     painter->rotate(wheelsAngle);
     painter->drawRect(0, -7, 10, 15); // front right
     painter->restore();
+    if(0 == TEST)
+    {
+        painter->drawRect(-30, 0, 12, 17); // rear left
+        painter->drawRect(19, 0, 12, 17);  // rear right
 
-    painter->drawRect(-30, 0, 12, 17); // rear left
-    painter->drawRect(19, 0, 12, 17);  // rear right
-
-    painter->save();
-    painter->drawLine(0,64,0,66);//add the trace to car
-    painter->restore();
+        painter->save();
+        painter->drawLine(0,64,0,70);//add the trace to car
+        painter->restore();
+    }
+    else{
+        painter->drawLine(0,-50,0,-30);
+    }
 }
 
 void Car::timerEvent(QTimerEvent *event)
@@ -145,5 +152,11 @@ void Car::timerEvent(QTimerEvent *event)
     qreal rotation = speed * turnRate;
     setTransform(QTransform().rotate(rotation), true);
     setTransform(QTransform::fromTranslate(0, -speed), true);
-    update(-30,-79,60,113);//update car's area,the rectangle area is car's largest shape.
+    if(0 == TEST)
+    {
+        update(-30,-79,60,113);//update car's area,the rectangle area is car's largest shape.
+    }
+    else{
+        update(-30,-65,60,15);
+    }
 }
