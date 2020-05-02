@@ -59,9 +59,10 @@ QRectF Car::boundingRect() const
 
 Car::Car() : color(Qt::green), wheelsAngle(0), speed(0)
 {
-    startTimer(1000 / 33);
+    startTimer(1000/60 );
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemIsFocusable, true);
+
 }
 
 void Car::accelerate()
@@ -126,20 +127,23 @@ void Car::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidg
 
     painter->drawRect(-30, 0, 12, 17); // rear left
     painter->drawRect(19, 0, 12, 17);  // rear right
+
+    painter->save();
+    painter->drawLine(0,64,0,66);//add the trace to car
+    painter->restore();
 }
 
 void Car::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event);
-
+    QPainter qpainter;
     const qreal axelDistance = 54;
     qreal wheelsAngleRads = qDegreesToRadians(wheelsAngle);
     qreal turnDistance = ::cos(wheelsAngleRads) * axelDistance * 2;/*todo:how to get this calculate?*/
     qreal turnRateRads = wheelsAngleRads / turnDistance;  // rough estimate
     qreal turnRate = qRadiansToDegrees(turnRateRads);
     qreal rotation = speed * turnRate;
-
     setTransform(QTransform().rotate(rotation), true);
     setTransform(QTransform::fromTranslate(0, -speed), true);
-    update();
+    update(-30,-79,60,113);//update car's area,the rectangle area is car's largest shape.
 }
