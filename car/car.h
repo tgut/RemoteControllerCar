@@ -80,4 +80,4 @@ private:
     qreal speed; // delta movement along the body axis
 };
 
-#endif // CAR_H//totest
+#endif // CAR_H

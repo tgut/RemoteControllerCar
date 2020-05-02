@@ -62,7 +62,6 @@ Car::Car() : color(Qt::green), wheelsAngle(0), speed(0)
     startTimer(1000 / 33);
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemIsFocusable, true);
-        //
 }
 
 void Car::accelerate()
@@ -122,7 +121,7 @@ void Car::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidg
     painter->save();
     painter->translate(20, -58);
     painter->rotate(wheelsAngle);
-    painter->drawRect(0, -7, 10, 15); // front left
+    painter->drawRect(0, -7, 10, 15); // front right
     painter->restore();
 
     painter->drawRect(-30, 0, 12, 17); // rear left
@@ -135,7 +134,7 @@ void Car::timerEvent(QTimerEvent *event)
 
     const qreal axelDistance = 54;
     qreal wheelsAngleRads = qDegreesToRadians(wheelsAngle);
-    qreal turnDistance = ::cos(wheelsAngleRads) * axelDistance * 2;
+    qreal turnDistance = ::cos(wheelsAngleRads) * axelDistance * 2;/*todo:how to get this calculate?*/
     qreal turnRateRads = wheelsAngleRads / turnDistance;  // rough estimate
     qreal turnRate = qRadiansToDegrees(turnRateRads);
     qreal rotation = speed * turnRate;
